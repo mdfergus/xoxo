@@ -42,9 +42,13 @@ const getInput = player => async () => {
 game.subscribe(printBoard);
 game.subscribe(getInput("X"));
 game.subscribe(getInput("O"));
-game.subscribe(function(){
-
-})
+game.subscribe(() => {
+  const { winner } = game.getState();
+  if (winner === "X wins!!" || winner === "O wins!!") {
+    process.stdout.write("\n\n" + winner + "\n" + "but you suck" + "\n\n");
+    process.exit(0);
+  }
+});
 
 // We dispatch a dummy START action to call all our
 // subscribers the first time.
