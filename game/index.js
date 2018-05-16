@@ -1,8 +1,7 @@
 import { Map } from "immutable";
 
-const board = Map();
-
 const MOVE = "MOVE";
+
 export const move = (str, coordArr) => {
   console.log("yo", str, coordArr);
   return {
@@ -12,21 +11,29 @@ export const move = (str, coordArr) => {
   };
 };
 
-export default function reducer(state = { board, turn: "X" }, action) {
-  switch (action.type) {
-    case MOVE:
-      action.turn === "X" ? (action.turn = "O") : (action.turn = "X");
-      const setBoard = state.board.setIn(action.board, action.turn);
-      console.log(winner(setBoard));
-      const winnerState = winner(setBoard);
-      return {
-        board: setBoard,
-        turn: action.turn,
+function boardReducer(board=Map(), action){
+    if(action.type === MOVE){
+        return board.setIn(action.board, action.turn);
+    }
+    return board
+}
+
+function turnReducer(turn='X', action){
+    if(action.type === MOVE){
+        return turn === 'X' ? 'O' : 'X'
+    }
+    return turn
+}
+
+export default function reducer(state = {}, action) {
+    //console.log(winner(setBoard));
+    const nextBoard = boardReducer(state.board, action)
+    const winnerState = winner(nextBoard)
+    return {
+        board: nextBoard,
+        turn: turnReducer(state.turn, action),
         winner: winnerState
-      };
-    default:
-      return state;
-  }
+      }
 }
 
 function winner(board) {

@@ -42,6 +42,9 @@ const getInput = player => async () => {
 game.subscribe(printBoard);
 game.subscribe(getInput("X"));
 game.subscribe(getInput("O"));
+game.subscribe(function(){
+
+})
 
 // We dispatch a dummy START action to call all our
 // subscribers the first time.
